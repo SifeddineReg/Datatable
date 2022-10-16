@@ -1,18 +1,20 @@
 <template>
-  <div class="">
+  <div>
     <table class="dtable"> 
-      <tr>
-        <td v-for="header in colnames" class="headers">{{header.h1}}</td>
-      </tr>
-      <tr class="line" v-for="(person,index,key) in tabledata" @dblclick="$emit('delline')">
-        <td :colspan="colnames.length" @click="$emit('select',index); showdet=!showdet;">
-          <table>
-            <tr><td class="info" v-for="value in person">{{value}}</td></tr>
-            <tr class="details" v-if="expanded">{{details[index]}}</tr>
-          </table>
-        </td>        
-      </tr>
+      <thead>
+        <tr><td v-for="header in colnames" class="headers">{{header.h1}}</td></tr>
+      </thead>
+      <tbody :style="{backgroundColor: tablecolor}">
+        <tr class="line" v-for="(person,index) in lineinpage" @click="$emit('select',index)" @dblclick="$emit('delline')">
+          <td class="info" v-for="value in person">{{value}}</td>
+        </tr>      
+      </tbody>
     </table>
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link">Previous</a></li>
+      <li class="page-item" v-for="page in totalpages" @click="$emit('pagelines',page)"><a class="page-link">{{page}}</a></li>
+      <li class="page-item"><a class="page-link">Next</a></li>
+  </ul>
   </div>
 </template>
 
@@ -21,23 +23,19 @@ export default {
   props: {
     tabledata: Array,
     colnames: Array,
-    radio: Boolean,
-    unselect: Function,
     del: Boolean,
-    expanded: Boolean,
-    details: Array
+    currentpage: Number,
+    linesperpage: Number,
+    lineinpage: Array,
+    tablecolor: String
   },
   data(){
     return {
-      showdet: false,
-      checked: []
     }
   },
-  methods: {
-  },
-  watch:{
-    checked(){
-      console.log(this.checked)
+  computed: {
+    totalpages(){
+      return Math.ceil(this.tabledata.length/this.linesperpage)
     }
   }
 }
@@ -47,16 +45,14 @@ export default {
 .line{
   cursor: pointer;
 }
-.line .details{
-  display: flex;
-  justify-content: flex-start;
-  max-width: 90%;
-  align-self: flex-end;
-  word-break: break-word;
+.pagination{
+  border: 0;
+}
+li{
+  background-color: aliceblue;
 }
 .line .info{
-  min-width: 100px;
-  max-width: 100px;
+  min-width: 110px;
   max-height: 100px;
   word-break: break-word;
   user-select: none;
@@ -73,8 +69,6 @@ export default {
   flex-direction: column;
 }
 .dtable,td{
-  /* border: 1px solid black;
-  border-collapse: collapse;*/
   text-align: center;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -84,11 +78,12 @@ export default {
 .headers{
   color: aliceblue;
   background-color: black;
-  font-weight: bold;
   min-width: 100px;
-  max-width: 200px;
+  max-width: 130px;
+  padding-left: 2px;
+  padding-right: 2px;
   word-break: break-word;
-  max-height: 100px;
+  max-height: 120px;
 
 }
 .dtable{
@@ -98,5 +93,11 @@ export default {
   top: 50%;
   max-height: 650px;
   overflow-y: scroll;
+}
+.table>:not(caption)>*>* {
+    /* padding: 0.5rem 0.5rem; */
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 1px;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
 </style>

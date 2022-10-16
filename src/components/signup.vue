@@ -1,19 +1,21 @@
 <template>
   <div class="signup">
-    <form class="form">
+    <span class="signerror">{{signerr}}</span>
+    <div class="form">
       <div class="grp">
         <label>Email:</label>
         <input v-model="email" class="form-control" type="text"/>
       </div>
       <div class="grp">
         <label>Password:</label>
-        <input v-model="pwd" class="form-control" type="text"/>
+        <input v-model="pwd" class="form-control" type="password"/>
       </div>
       <div class="grp">
         <label>Confirm password:</label>
-        <input v-model="pwd" class="form-control" type="text"/>
+        <input v-model="pwd2" class="form-control" type="password"/>
       </div>
-    </form>
+      <input class="sbmt btn btn-dark" type="button" value="Signup" @click="signup"/>
+    </div>
   </div>
 </template>
 
@@ -22,13 +24,41 @@
     data(){
       return {
         email: '',
-        pwd: ''
+        pwd: '',
+        pwd2: ''
+      }
+    },
+    props: {
+      signerr: String
+    },
+    methods: {
+      signup(){
+        if(this.pwd!=this.pwd2){
+          document.querySelector('.signerror').innerHTML = "Passwords don't match"
+          document.querySelector('.signerror').style.display = 'block'
+        }
+        else{
+          this.$emit('signup',this.email,this.pwd)
+        }
       }
     }
   }
 </script>
 
 <style scoped>
+  span{
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
+    background-color: orange;
+    padding: 5px;
+    margin-top: 10px;
+    display: none;
+  }
+  .sbmt{
+    width: 100%;
+    margin-top: 10px ;
+  }
   .grp{
     display: flex;
     flex-direction: column;
@@ -37,6 +67,7 @@
   }
   .signup{
     display: flex;
+    flex-direction: column;
     justify-content: center;
   }
   .form{

@@ -5,15 +5,17 @@
       <input class="sign btn btn-outline-dark" type="button" value="Signup" @click="changetab('Signup')"/>
     </div>
     <KeepAlive>
-      <component :is="tab"></component>
+      <component :is="tab" :logerr="logerr" :signerr="signerr" @login="login" @signup="signup"></component>
     </KeepAlive>
-    <input class="sbmt btn btn-dark" type="button" :value="tab"/>
   </div>
 </template>
 
 <script>
 import Login from './login.vue'
 import Signup from './signup.vue'
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth"
+
+const auth = getAuth()
 
 export default {
   components: {
@@ -22,7 +24,9 @@ export default {
   },
   data(){
     return {
-      tab: 'Login'
+      tab: 'Login',
+      signerr: '',
+      logerr: ''
     }
   },
   methods: {
@@ -36,6 +40,25 @@ export default {
         document.querySelector('.sign').classList.add('active')
         document.querySelector('.log').classList.remove('active')
       }
+    },
+    async signup(email,pwd){
+      await createUserWithEmailAndPassword(auth,email,pwd)
+        .then(()=>{
+          this.changetab('Login')
+        })
+        .catch((error)=>{
+          this.signerr = error.message
+        })
+    },
+    async login(email,pwd){
+      await signInWithEmailAndPassword(auth,email,pwd)
+        .then(()=>{
+          this.$router.push({name: 'tables'}).catch(()=>{})
+        })
+        .catch((error)=>{
+          this.logerr = error.message
+        })
+        
     }
   }
 }

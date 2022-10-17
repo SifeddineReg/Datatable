@@ -47,7 +47,6 @@
             else this.tablecolor = docs.data().tablecolor
             this.linesperpage = docs.data().linesperpage
             this.pagelines(this.currentpage)
-
           }
           else this.$router.push('tables').catch(()=>{})
         }
@@ -87,8 +86,7 @@
         tablecolor: "",
         linesperpage: 10,
         lineinpage: [],
-        currentpage: 1,
-        key: 1
+        currentpage: 1
       }
     },
     methods: {

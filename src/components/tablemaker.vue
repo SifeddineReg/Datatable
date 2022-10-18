@@ -144,8 +144,8 @@
       async savetable(lines,cols){
         if(confirm("Save table?")){
           await updateDoc(doc(tables,this.idt),{
-            'columns': cols,
-            'lines': lines,
+            'columns': this.headers,
+            'lines': this.data,
             'timestamp': new Date().toLocaleDateString(),
             'tablecolor': this.tablecolor,
             'linesperpage': this.linesperpage

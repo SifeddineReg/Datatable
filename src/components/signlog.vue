@@ -5,7 +5,7 @@
       <input class="sign btn btn-outline-dark" type="button" value="Signup" @click="changetab('Signup')"/>
     </div>
     <KeepAlive>
-      <component :is="tab" :logerr="logerr" :signerr="signerr" @login="login" @signup="signup"></component>
+      <component :key="tab" :is="tab" :logerr="logerr" :signerr="signerr" @login="login" @signup="signup"></component>
     </KeepAlive>
   </div>
 </template>
@@ -13,6 +13,7 @@
 <script>
 import Login from './login.vue'
 import Signup from './signup.vue'
+import fbauth from '../firebase/config.js'
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth"
 
 const auth = getAuth()

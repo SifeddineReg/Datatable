@@ -1,8 +1,8 @@
 <template>
   <div class="configbar">
     <div class="configblock">
-      <button class="button" @click="$emit('changetheme')">Save Table</button>
-      <button class="button" @click="$emit('changetheme'); showexp=!showexp">Export Table</button>
+      <button class="button" @click="$emit('savetable')">Save Table</button>
+      <button class="button" @click="showexp=!showexp">Export Table</button>
       <div class="export" v-if="showexp">
         <button class="btnexport" @click="$emit('exportjson')">Json&nbsp;<i class="bi bi-filetype-json"></i></button>
         <button class="btnexport" @click="$emit('exportcsv')">Excel&nbsp;<i class="bi bi-file-excel"></i></button>

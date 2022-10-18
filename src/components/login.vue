@@ -1,17 +1,17 @@
 <template>
   <div class="login">
     <span class="logerror">{{logerr}}</span>
-    <div class="form" >
+    <form class="form" >
       <div class="grp">
         <label>Email:</label>
-        <input v-model="email" class="form-control" type="text"/>
+        <input v-model="email" class="form-control" type="email"/>
       </div>
       <div class="grp">
         <label>Password:</label>
         <input v-model="pwd" class="form-control" type="password"/>
       </div>
       <input class="sbmt btn btn-dark" type="button" value="Login" @click="login"/>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -25,6 +25,11 @@
     },
     props: {
       logerr: String
+    },
+    watch:{
+      logerr(){
+        document.querySelector('.logerror').style.display = 'block'
+      }
     },
     methods: {
       login(){
@@ -56,6 +61,7 @@
   }
   .login{
     display: flex;
+    flex-direction: column;
     justify-content: center;
   }
   .form{

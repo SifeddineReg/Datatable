@@ -2,7 +2,7 @@
   <div class="tables">
     <buttons @logout="logout" @createnew="createnew"/>
     <div class="tablecards">
-      <div v-for="(name,index) in table" @click="redirectable(index)">
+      <div class="tcard" v-for="(name,index) in table" @click="redirectable(index)">
         <tablecard  :title="name.name" :time="name.timestamp" />
       </div>
     </div>
@@ -84,17 +84,23 @@ export default {
   .tables{
     margin-top: 100px;
   }
+  .tcard{
+    height: 110px;
+  }
   .buttons{
     position: absolute;
     right: 0;
     top: 0;
   }
   .tablecards{
+    min-width: 500px;
+    min-height: 500px;
     position: fixed;
     top: 15%;
-    right: 5%;
+    right: 3%;
     display: flex;
     flex-direction: row;
+    align-content: flex-start;
     flex-wrap: wrap;
     max-width: 670px;
     max-height: 500px;
@@ -104,7 +110,7 @@ export default {
     display: none;
   }
   .tablecards div{
-    margin-right: 5px;
+    margin-right: 15px;
     margin-bottom: 10px;
   }
   @media only screen and (max-width: 680px) {

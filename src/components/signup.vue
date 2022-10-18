@@ -1,10 +1,10 @@
 <template>
   <div class="signup">
     <span class="signerror">{{signerr}}</span>
-    <div class="form">
+    <form class="form">
       <div class="grp">
         <label>Email:</label>
-        <input v-model="email" class="form-control" type="text"/>
+        <input v-model="email" class="form-control" type="email"/>
       </div>
       <div class="grp">
         <label>Password:</label>
@@ -15,7 +15,7 @@
         <input v-model="pwd2" class="form-control" type="password"/>
       </div>
       <input class="sbmt btn btn-dark" type="button" value="Signup" @click="signup"/>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -31,6 +31,11 @@
     props: {
       signerr: String
     },
+    watch:{
+      signerr(){
+        document.querySelector('.signerror').style.display = 'block'
+      }
+    },  
     methods: {
       signup(){
         if(this.pwd!=this.pwd2){

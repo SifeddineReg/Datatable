@@ -126,6 +126,7 @@
         }
       },
       back(){
+        this.$emit('yesbackgroundimg','yes')
         this.$router.push('tables').catch(()=>{})
       },
       async savetable(lines,cols){

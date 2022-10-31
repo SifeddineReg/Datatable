@@ -34,6 +34,7 @@ export default {
   methods: {
     redirectable(value){
       let idt = this.ids[value]
+      this.$emit('nobackgroundimg',"no")
       this.$router.push({name: 'maker', params: {id: idt, name:"maker"}}).catch(()=>{})
     },
     async createnew(value){

@@ -1,6 +1,7 @@
 <template>
   <div>
     <table class="dtable"> 
+      
       <thead>
         <tr><td v-for="header in colnames" class="headers">{{header.h1}}</td></tr>
       </thead>
@@ -11,10 +12,10 @@
       </tbody>
     </table>
     <ul class="pagination">
-      <li class="page-item"><a class="page-link">Previous</a></li>
+      <li class="page-item" @click="$emit('previous')"><a class="page-link">Previous</a></li>
       <li class="page-item" v-for="page in totalpages" @click="$emit('pagelines',page)"><a class="page-link">{{page}}</a></li>
-      <li class="page-item"><a class="page-link">Next</a></li>
-  </ul>
+      <li class="page-item" @click="$emit('next')"><a class="page-link">Next</a></li>
+    </ul>
   </div>
 </template>
 
@@ -31,17 +32,24 @@ export default {
   },
   data(){
     return {
+       variable:  'sifeddine'
     }
   },
   computed: {
     totalpages(){
       return Math.ceil(this.tabledata.length/this.linesperpage)
     }
+  },
+  methods: {
+
   }
 }
 </script>
 
 <style scoped>
+a{
+  padding: 6px 12px 6px 12px;
+}
 .line{
   cursor: pointer;
 }

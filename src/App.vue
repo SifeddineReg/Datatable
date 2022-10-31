@@ -5,24 +5,19 @@
 </template>
 
 <script>
-import signlog from './components/signlog.vue'
-import tablecard from './components/tablecard.vue'
-import tables from './components/dsptables.vue'
-import maker from './components/tablemaker.vue'
 export default {
   name: 'App',
-  components: {
-    signlog,
-    tablecard,
-    tables,
-    maker
+  updated(){
+    if(this.$route.name=='maker') ;
+    else document.body.backgroundImage = 'none'
   }
 }
 </script>
 
 <style>
 body{
-  background-image: url('./assets/bgimg.jpeg');
+  /* background-image: url('./assets/bgimg.jpeg'); */
+  background-color: antiquewhite;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

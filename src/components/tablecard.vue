@@ -23,7 +23,7 @@
     display: flex;
     flex-direction: column;
     padding: 10px;
-    background-color: rgb(132, 226, 226);
+    background-color: #F1F1F1;
     width: 100%;
     align-items: flex-start;
     border-bottom-left-radius: 5px;

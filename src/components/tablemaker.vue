@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div >
     <input type="button" class="back btn btn-outline-secondary" value="<< Back" @click="back"/>
-    <datat class="table tablee" :currentpage="currentpage" :linesperpage="linesperpage" :lineinpage="lineinpage" :del="toberem" :tabledata="data" :colnames="headers" @select="select" @previous="previous" @delline="delline" @pagelines="pagelines" :tablecolor="tablecolor" @next="next"/>
+    <datat class="table tablee" :currentpage="currentpage" :linesperpage="linesperpage" :lineinpage="lineinpage" :del="toberem" :tabledata="data" :colnames="headers" @select="select"  @delline="delline" @pagelines="pagelines" :tablecolor="tablecolor" @next="next" @previous="previous"/>
     <TableConfigurator class="config col-md-4" :exp="exp" :dark="darkmode" :indexsel="indexsel" :del="toberem" :disablebtn="disable" :enrg="objectpers" :tabledata="data" :colnames="headers" @addline="addline" @addcol="addcol" @deleteall="deleteall" @removecol="removecol" @delline="delline" @addlines="addlines" @changetheme="changetheme" @showexport="showexport" @exportcsv="exportcsv" @exportimg="exportimg" @exportjson="exportjson" @savetable="savetable" @rowcolor="rowcolor" @rowsperpage="rowsperpage" @sortcol="sortcol"/>
   </div>
 </template>
@@ -43,8 +43,8 @@
             })
             if(this.data.length!=0) this.disable=true
             else this.disable = false
-            if(docs.data().tablecolor == "Dark theme") this.darkmode = true
-            else this.tablecolor = docs.data().tablecolor
+            if(docs.data().tablecolor == "Dark theme") this.rowcolor("Dark theme")
+            else this.rowcolor(docs.data().tablecolor)
             this.linesperpage = docs.data().linesperpage
             this.pagelines(this.currentpage)
           }
@@ -54,18 +54,6 @@
           this.$router.push('home').catch(()=>{})
         }
       })
-    },
-    watch: {
-      darkmode(){
-        if(this.darkmode){
-          document.querySelector(".table").classList.add("table-dark")
-        }
-      },
-      watch: {
-        data(){
-          alert('im here')
-        }
-      }
     },
     props: {
     },
@@ -82,7 +70,6 @@
         linessel: [],
         headers: [],
         data: [],
-        darkmode: false,
         tablecolor: "",
         linesperpage: 10,
         lineinpage: [],
@@ -90,12 +77,19 @@
       }
     },
     methods: {
-      sortcol(col){
-        alert(col)
-        this.data = this.data.sort((a,b)=>{
-          if(a[col].toLowerCase() < b[col].toLowerCase()) return -1
-        })
-        this.pagelines(this.currentpage)
+      sortcol(col,updown){
+        if(updown=='up'){
+          this.data = this.data.sort((a,b)=>{
+            if(a[col].toLowerCase() < b[col].toLowerCase()) return -1
+          })
+          this.pagelines(this.currentpage)
+        }
+        else{
+          this.data = this.data.sort((a,b)=>{
+            if(a[col].toLowerCase() > b[col].toLowerCase()) return -1
+          })
+          this.pagelines(this.currentpage)
+        }
       },
       rowsperpage(numrows){
         this.linesperpage=parseInt(numrows)
@@ -121,23 +115,16 @@
       },
       rowcolor(color){
         if(color=="Dark theme"){
-          document.querySelector(".table").classList.add("table-dark")
+          document.querySelector(".dtable").classList.add("table-dark")
           this.tablecolor = color
         }
         else{
-          document.querySelector(".table").classList.remove("table-dark")
+          document.querySelector(".dtable").classList.remove("table-dark")
           let row = document.querySelector("tbody")
           row.style.backgroundColor = color
           this.tablecolor = color
         }
       },
-      // sortcol(column){
-      //   alert(column)
-      //   if(!this.sorted) this.data.sort((a,b) => a[column] - b[column])
-      //   else this.data.sort((a,b) => b[column] - a[column])
-      //   this.sorted=!this.sorted
-      //   console.log(this.data)
-      // },
       back(){
         this.$router.push('tables').catch(()=>{})
       },
@@ -162,19 +149,19 @@
       anchor.remove()
       },
       exportimg(){
-        const screenshotTarget = document.querySelector(".tableau");
-          html2canvas(screenshotTarget).then((canvas)=>{
-          const base64image = canvas.toDataURL("image/png")
-          let anchor = document.createElement('a')
-          anchor.setAttribute('href',base64image)
-          anchor.setAttribute('download',"table.png")
-          anchor.click()
-          anchor.remove()
+        const screenshotTarget = document.querySelector('.dtable');
+          html2canvas(screenshotTarget).then(canvas=>{
+            const base64image = canvas.toDataURL("image/png")
+            let anchor = document.createElement('a')
+            anchor.setAttribute('href',base64image)
+            anchor.setAttribute('download',"table.png")
+            anchor.click()
+            anchor.remove()
           })
       },
       exportcsv(){
         let table2excel = new Table2Excel();
-        table2excel.export(document.querySelectorAll(".tableau"));
+        table2excel.export(document.querySelectorAll(".dtable"));
       },
       showexport(){
         this.exp=!this.exp
@@ -260,8 +247,15 @@
   .tablee{
     position: fixed;
     top: 5%;
-    right: 45%;
+    right: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     /* overflow-y: scroll; */
+    /* margin: 0;
+    margin-top: 20px;
+    max-width: 595px;
+    width: 75%; */
   }
   .back{
     z-index: 55;
@@ -279,12 +273,6 @@
   }
   .config{
     overflow-y: scroll;
-  }
-  .table{
-    margin: 0;
-    margin-top: 20px;
-    max-width: 595px;
-    width: 75%;
   }
   .table::-webkit-scrollbar {
     display: none;

@@ -11,6 +11,11 @@
     </div>
     <div class="configblock">
       <header>Columns:</header>
+      <div class="sort">
+        <select v-model="sortcol"><option v-for="col in colnames">{{col.h1}}</option></select>
+        <i class="bi bi-sort-up" @click="$emit('sortcol',sortcol,'up')"></i>
+        <i class="bi bi-sort-down" @click="$emit('sortcol',sortcol,'down')"></i>
+      </div>
       <button class="button" :disabled="disablebtn" @click="$emit('addcol')">add Column</button>
       <div v-for="(column,index) in colnames" class="cols">
         <input type="text" v-model="column.h1">
@@ -18,7 +23,7 @@
       </div>
     </div>
     <div class="configblock">
-      <header>Rows:</header>
+      <header>Rows:</header>  
       <div class="clrnum">
         <select @change="$emit('rowcolor',tablecolor)" v-model="tablecolor"><option v-for="color in colors">{{color}}</option></select>
         <select @change="$emit('rowsperpage',rowsperpage)" v-model="rowsperpage"><option v-for="num in numberpages">{{num}}</option></select>
@@ -47,7 +52,8 @@ export default {
       colors: ['Dark theme','Lightskyblue','Lightsalmon','Lightgreen','Lightyellow'],
       tablecolor: '',
       numberpages: ['5','7','10'],
-      rowsperpage: ''
+      rowsperpage: '',
+      sortcol: ''
     }
   },
   props: {
@@ -73,12 +79,18 @@ export default {
   .clrnum{
     display: flex;
   }
+  .sort{
+    display: flex;
+  }
   .export{
     display: flex;
     flex-direction: column;
   }
   i{
     color: aliceblue;
+    padding: 0px 2px 0px 2px;
+    font-size: larger;
+    cursor: pointer;
   }
   .btnexport{
     background-color: black;
